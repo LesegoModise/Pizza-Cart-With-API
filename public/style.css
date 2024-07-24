@@ -1,0 +1,259 @@
+.login-bg {
+    background: url(./login-background.avif);
+}
+
+.logout-bg {
+    background: url(./logout-background.jpg);
+    height: 100vh;
+}
+
+.login-bg .hide-on-logout {
+    display: none;
+}
+
+.login-bg .hide-on-login {
+    display: block;
+}
+
+
+
+.navbar-brand {
+    font-weight: bolder;
+    text-decoration: underline;
+    color: black;
+}
+
+.navbar-text {
+    font-style: italic;
+}
+
+.hide-on-logout {
+    color: white;
+}
+
+.container, .contact-us {
+    padding: 2em;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: white;
+}
+
+ .success-message { 
+    color: green;
+    font-weight: bold;
+ }
+
+ .error-message {
+    color: red;
+    font-weight: bold;
+ }
+
+.foot {
+    background-color: #DEBD9C;
+}
+
+.history {
+    background-color: rgba(0, 0, 0, 0.438);
+}
+
+.navbar-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.his, .cartbut, .addpiz, .fav {
+    background-color: gray;
+    border:2px white solid;
+}
+
+h1 {
+    text-align: center;
+    text-decoration: underline;
+    text-shadow: #CFD8D7;
+    text-decoration-color: white;
+    font-weight: bolder;
+    font-style: oblique;
+    background-color: rgba(0, 0, 0, 0.747);
+}
+
+.subheading, label {
+    font-weight: bold;
+    font-size:larger;
+    text-align: center;
+    text-decoration: underline;
+}
+
+.message {
+    font-style: italic;
+}
+
+.cart-background {
+    background-color: rgba(0, 0, 0, 0.747);
+    border:1px solid black;
+    color: white;
+}
+
+.featured-pizzas {
+    background-color: rgba(0, 0, 0, 0.747);
+    border-radius: 8px;
+}
+
+.foot {
+    background-color: #DEBD9C;
+}
+
+@media screen and (max-width: 600px) {
+    .featured-pizzas {
+        background-color: rgba(0, 0, 0, 0.747);
+        border-radius: 8px;
+        width: 100%;
+    }
+    .foot {
+        display: grid;
+        grid-template-columns: 1fr 1fr; 
+        background-color: #DEBD9C;
+        color: black;
+    }
+
+    .contact, .address {
+        margin: 5px;
+        color: black;
+    }
+    
+    .contact-us {
+        padding-bottom: 1em;
+        color: black;
+    }
+
+    .hide-on-login {
+        color: white;
+        display: none;
+        justify-items: center;
+        justify-self: center;
+        text-align: center;
+        padding-top: 6.5em;
+        font-size: xx-large;
+        font-weight: bolder;
+        text-decoration: underline;
+    }
+}
+
+@media screen and (min-width: 600px) {
+    .featured-pizzas, .design {
+        background-color: rgba(0, 0, 0, 0.747);
+        border-radius: 8px;
+        margin-top: 4em;
+    }
+
+    .contact {
+        float: inline-start;
+        color: black;
+    }
+
+    .address {
+        float: inline-end;
+        padding-left: 8em;
+        color: black;
+    } 
+
+    .foot {
+        background-color: #DEBD9C;
+        color: black;
+    }
+
+    .hide-on-login {
+        color: white;
+        display: none;
+        justify-items: center;
+        justify-self: center;
+        text-align: center;
+        padding-top: 6.5em;
+        font-size: xx-large;
+        font-weight: bolder;
+        text-decoration: underline;
+    }
+}
+
+.pizza-block-feature {
+    border: 1px solid #ddd;
+    padding: 16px;
+    margin: 35px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgb(0, 0, 0, 0.1);
+    max-width: 300px;
+    background-color: #DEBD9C;
+}
+
+.pizza-info {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.pizza-icon {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.pizza-block {
+    border: 1px solid #ddd;
+    padding: 16px;
+    margin: 35px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgb(0, 0, 0, 0.1);
+    max-width: 300px;
+    background-color: #DEBD9C;
+}
+
+.design {
+    background-color: rgba(0, 0, 0, 0.747);
+    border-radius: 8px;
+}
+
+.pizza-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.pizza-container > div {
+    flex: 1 1 300px;
+}
+
+.card {
+    margin-bottom: 1rem;
+}
+
+.price {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.pizza-block .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+
+.total {
+    text-align: right;
+}
+
+th {
+    background-color: beige;
+    color: black;
+}
+
+[x-cloak] { display: none !important; }

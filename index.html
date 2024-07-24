@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Pizza Cart With API</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"
+        integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>    
+    <script src="./index.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <link rel="stylesheet" href="./public/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+
+<body :class="{ 'login-bg': !username || !cartId, 'logout-bg': username && cartId }" x-data="pizzaCartWithAPIWidget"
+    x-init="init">
+
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="sr-only">Toggle Navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Pizza Cart</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li x-show="username && cartId" class="navbar-text" x-text="'Cart Code: ' + cartId"></li>
+                </ul> 
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <div class="form-inline">
+                            <input type="text" class="form-control" x-model="username" placeholder="Username">
+                        </div>
+                    </li>
+                    <li>
+                        <button class="btn btn-primary" x-on:click="login" x-show="username.length > 2 && !cartId">Login</button>
+                    </li>
+                    <li>
+                        <button class="btn btn-danger" x-on:click="logout" x-show="username && cartId">Logout</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hide-on-login">
+        <p style="background-color: black;">WELCOME TO  SLICE & DICE</p>
+    </div>
+
+    <h1 x-text="title" class="hide-on-logout"></h1>
+    <div class="container hide-on-logout">
+
+        <div class="history hide-on-logout">
+            <button  @click="toggleHistoricalOrders" class="btn btn-primary mb-3 his">Show Historical Orders</button>
+            
+            <div x-show="showHistoricalOrders">
+                <div>Historical Orders:</div>
+                <div x-show="historicalOrders.length > 0">
+                    <template x-for="order in historicalOrders">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <strong>User:</strong> <span x-text="order.username"></span>
+                                <strong>Cart Code:</strong> <span x-text="order.cartId"></span>
+                                <strong>Date and Time:</strong> <span x-text="order.dateTime"></span>
+                            </div>
+                            <div class="card-body table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Flavour</th>
+                                            <th>Size</th>
+                                            <th>Price</th>
+                                            <th>Qty</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template x-for="pizza in order.pizzas">
+                                            <tr>
+                                                <td x-text="pizza.flavour"></td>
+                                                <td x-text="pizza.size"></td>
+                                                <td x-text="pizza.price"></td>
+                                                <td x-text="pizza.qty"></td>
+                                                <td x-text="pizza.total"></td>
+                                            </tr>
+                                        </template>
+                                        <tr>
+                                            <td colspan="3">Total</td>
+                                            <td colspan="2" class="total">R <span x-text="order.total"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3">Payment</td>
+                                            <td colspan="2" class="total">R <span x-text="order.paymentAmount"></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3">Change</td>
+                                            <td colspan="2" class="total">R <span x-text="order.change"></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+                <div x-show="historicalOrders.length === 0">
+                    <p>No Historical Orders Found.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="Cart cart-background" x-cloak>
+            <!-- <div>
+                <div>
+                    Username: <input type="text" x-model="username">
+                    <button x-on:click="login" x-show="username.length > 4 && !cartId">Login</button>
+                    <button x-on:click="logout" x-show="username && cartId">Logout</button>
+                </div>
+                <div x-show="cartId">
+                    Cart Code: <span x-text="cartId"></span>
+                </div>
+            </div> -->
+                
+
+            <div x-show="cartTotal > 0">
+                <div class="subheading">Your Cart</div>
+                <div x-text="message" :class="message.includes('Payment Received') ? 'success-message' : 'error-message'" style="font-size: large; background-color: black">Message Here</div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Flavour</th>
+                                <th>Size</th>
+                                <th>Price</th>
+                                <th>Qty</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="pizza in cartPizzas">
+                                <tr>
+                                    <td x-text="pizza.flavour"></td>
+                                    <td x-text="pizza.size"></td>
+                                    <td x-text="pizza.price"></td>
+                                    <td>
+                                        <button class="btn btn-success" x-on:click="addPizzaToCart(pizza.id)">+</button>
+                                        <span x-text="pizza.qty"></span>
+                                        <button class="btn btn-danger" x-on:click="removePizzaFromCart(pizza.id)">-</button>
+                                    </td>
+                                    <td x-text="pizza.total"></td>
+                                </tr>
+                            </template>
+                            <tr>
+                                <td colspan="3">Total</td>
+                                <td colspan="2" class="total">R <span x-text="cartTotal"></span></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">Pay Now</td>
+                                <td>
+                                    <input x-model="paymentAmount" type="text" class="form-control">
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary cartbut" x-on:click="payForCart()">Pay</button>
+                                    <!-- <button id="clear-cart-btn" class="btn btn-warning" x-on:click="clearCart()">Clear Cart</button> -->
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div x-show="username && cartId" class="mt-4">
+
+            <div class="featured-pizzas row mb-4">
+                <div x-show="featuredPizzas" class="subheading">Featured Pizzas</div>
+                <template x-for="pizza in featuredPizzas" >
+                    <div class="col-md-4 mb-4 pizza-block-feature">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="pizza-info">
+                                    <img src="./public/pizza icon.webp" alt="Pizza Icon" class="pizza-icon">
+                                    <h5 class="card-title" x-text="pizza.flavour"></h5>
+                                </div>
+                                <p>Size: <span x-text="pizza.size"></span></p>
+                                <strong>
+                                    <p class="price">Price: R<span x-text="pizza.price"></span></p>
+                                </strong>
+                                <button class="btn btn-primary addpiz" x-on:click="addPizzaToCart(pizza.id)">Add To Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+            <div class="mb-3">
+                <label for="specialty">Select Specialty:</label>
+                <select id="specialty" class="form-control" x-model="selectedSpecialty"
+                    x-on:change="filterPizzasBySpecialty" class="special">
+                    <option value="">All</option>
+                    <option value="chicken">Chicken</option>
+                    <option value="meaty">Meaty</option>
+                    <option value="vegetarian">Vegetarian</option>
+                    <option value="specialty">Specialty</option>
+                </select>
+            </div>
+            <div class="pizzas-container design row">
+                <template x-for="pizza in filteredPizzas">
+                    <div class="pizza-block col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="pizza-info">
+                                    <img src="./public/pizza icon.webp" alt="Pizza Icon" class="pizza-icon">
+                                    <h5 class="card-title" x-text="pizza.flavour"></h5>
+                                </div>
+                                <p>Size: <span x-text="pizza.size"></span></p>
+                                <strong>
+                                    <p class="price">Price: R<span x-text="pizza.price"></span></p>
+                                </strong>
+                                <button class="btn btn-primary addpiz" x-on:click="addPizzaToCart(pizza.id)">Add To
+                                    Cart</button>
+                                <button class="btn btn-primary fav" x-on:click="manageFeaturedPizza(pizza.id)">Feature Pizza</button>
+                                <!-- <button class="btn btn-primary" 
+                                        x-on:click="toggleFavourite(pizza.id)" 
+                                        :class="{ 'text-danger': isFavourite(pizza.id) }">
+                                    <i class="fa" :class="isFavourite(pizza.id) ? 'fa-heart' : 'fa-heart-o'"></i>
+                                </button> -->
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+            <div class="contact-us">
+                <div class="subheading">Contact Details</div>
+                <div class="foot">
+                    <div class="font contact">
+                        <div class="item">Contact Us:</div>
+                        +27 (0) 12 840 1092 <br>
+                        info@perfectpizza.co.za <br>
+                        /Facebook /Twitter /Instagram
+                    </div>
+            
+                    <div class="font address">
+                        <div class="item">Address:</div>
+                        578 King Road <br>
+                        Rivonia Drive <br>
+                        Gauteng
+                    </div>
+                </div>
+            
+            </div>
+
+        </div>
+        
+        
+        
+        
+        <!-- <div x-show="username && cartId">
+            <div>Pizzas</div>
+            <div class="pizzas-container">
+                <template x-for="pizza in pizzas">
+                    <div class="pizza-block">
+                        <div x-text="pizza.flavour"></div>
+                        <p>Size: <span x-text="pizza.size"></span></p>
+                        <strong>
+                            <p class="price">Price: R<span x-text="pizza.price"></span></p>
+                        </strong>
+                        <div>
+                            <button x-on:click="addPizzaToCart(pizza.id)">Add To Cart</button>
+                        </div>
+                    </div>
+                </template>
+            </div>   
+        </div> -->
+        
+        
+    </div>
+    
+    
+    
+</body>
+
+</html>
